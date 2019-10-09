@@ -21,8 +21,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header as="h2">
-          <Icon name="users" />
+        <Header as='h2'>
+          <Icon name='users' />
           <Header.Content>.NET Core 3.0 | ReactJS | TypeScript</Header.Content>
         </Header>
         <List>
