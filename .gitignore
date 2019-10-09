@@ -2,5 +2,4 @@ bin
 obj
 .vscode
 .DS_STORE
-appsettings.json
 *.db
