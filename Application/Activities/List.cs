@@ -20,32 +20,32 @@ namespace Application.Activities
 
         public class Handler : IRequestHandler<Query, List<Activity>>
         {
-            private readonly DataContext _context;
-            private readonly ILogger _logger;
+            private readonly DataContext context;
+            private readonly ILogger logger;
 
             public Handler(DataContext context, ILogger<List> logger)
             {
-                this._context = context;
-                this._logger = logger;
+                this.context = context;
+                this.logger = logger;
             }
 
             public async Task<List<Activity>> Handle(Query request, CancellationToken cancellationToken)
             {
                 try
                 {
-                    for (var i = 0; i < 10; i++)
+                    for (var i = 0; i < 15; i++)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        await Task.Delay(1000, cancellationToken);
-                        _logger.LogInformation($"Task {i} has completed");
+                        await Task.Delay(10, cancellationToken);
+                        this.logger.LogInformation($"Task {i} has completed");
                     }
                 }
-                catch (Exception ex) when(ex is TaskCanceledException)
+                catch (Exception ex) when (ex is TaskCanceledException)
                 {
-                    _logger.LogInformation("Task was cancelled");
+                    this.logger.LogInformation("Task was cancelled");
                 }
 
-                var activities = await this._context.Activities.ToListAsync();
+                var activities = await this.context.Activities.ToListAsync();
 
                 return activities;
             }

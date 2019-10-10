@@ -19,16 +19,16 @@ namespace Application.Activities
 
         public class Handler : IRequestHandler<Query, Activity>
         {
-            private readonly DataContext _context;
+            private readonly DataContext context;
 
             public Handler(DataContext context)
             {
-                this._context = context;
+                this.context = context;
             }
 
             public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
             {
-                var activity = await _context.Activities.FindAsync(request.Id);
+                var activity = await this.context.Activities.FindAsync(request.Id);
 
                 return activity;
             }
