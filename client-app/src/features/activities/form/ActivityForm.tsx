@@ -4,6 +4,8 @@ import { v4 as uuid } from 'uuid';
 
 import { IActivity } from '../../../app/models/activity';
 
+import { observer } from 'mobx-react-lite';
+
 interface IProps {
   setEditMode: (editMode: boolean) => void;
   activity: IActivity;
@@ -116,4 +118,4 @@ const ActivityForm: React.FC<IProps> = ({
   );
 };
 
-export default ActivityForm;
+export default observer(ActivityForm);

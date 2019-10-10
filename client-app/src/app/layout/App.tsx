@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react';
+import React, { useState, useEffect, SyntheticEvent, useContext } from 'react';
 
 import { Container } from 'semantic-ui-react';
 
@@ -7,8 +7,13 @@ import NavBar from '../../features/nav/NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import agent from '../api/agent';
 import LoadingComponent from './LoadingComponent';
+import ActivityStore from '../stores/ActivityStore';
+
+import { observer } from 'mobx-react-lite';
 
 const App = () => {
+  const activityStore = useContext(ActivityStore);
+
   const [activities, setActivities] = useState<IActivity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(
     null
@@ -67,31 +72,19 @@ const App = () => {
   };
 
   useEffect(() => {
-    agent.Activities.list()
-      .then(response => {
-        let activities: IActivity[] = [];
+    activityStore.loadActivities();
+  }, [activityStore]);
 
-        response.forEach(activity => {
-          activity.date = activity.date.split('.')[0];
-          activities.push(activity);
-        });
-
-        setActivities(activities);
-      })
-      .then(() => setLoading(false));
-  }, []);
-
-  if (loading) return <LoadingComponent content="Loading activities ..." />;
+  if (activityStore.loadingInitial)
+    return <LoadingComponent content="Loading activities ..." />;
 
   return (
     <>
       <NavBar openCreateForm={handleOpenCreateForm} />
       <Container style={{ marginTop: '7em' }}>
         <ActivityDashboard
-          activities={activities}
+          activities={activityStore.activities}
           selectActivity={handleSelectActivity}
-          selectedActivity={selectedActivity}
-          editMode={editMode}
           setEditMode={setEditMode}
           setSelectedActivity={setSelectedActivity}
           createActivity={handleCreateActivity}
@@ -105,4 +98,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default observer(App);
